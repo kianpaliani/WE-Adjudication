@@ -1,0 +1,27 @@
+    <h2>Adjudication</h2>
+    <p> Only students currently connected with the selected term will be adjudicated for that term.
+        Adjudication information will appear in the adjudication tab for each student.  If there is
+        any adjudication information already associated with the student for the selected term, it will
+        be overwritten.  It is recommended to do all manual adjucations after this adjudication process is run.
+    </p>
+  <p>
+    The system does not currently support term or cumulative averages.
+  </p>
+
+     <select onchange={{action 'selectTerm' value="target.value"}}>
+         <option value="null">Select Term</option>
+              {{#each termArray as |termChoice|}}
+                <option value={{termChoice.id}}>{{termChoice.name}} </option>
+              {{/each}}
+    </select>
+    <label>Select Date: </label>
+    {{input type="date" value = selectedDate}}
+    {{#if buttonDisabled}}
+    <div class="ui green disabled button" {{action "adjudicate"}}>Adjudicate Students</div>
+{{else}}
+<div class="ui green button" {{action "adjudicate"}}>Adjudicate Students</div>
+    {{/if}}
+
+    {{#if isAdjShow}}
+        {{adjudicate-students termCode=selectedTerm notDONE=isAdjShow studentArray=studentArray terms=termsToAdju date=selectedDate}}
+    {{/if}}

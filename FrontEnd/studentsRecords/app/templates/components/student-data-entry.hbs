@@ -1,0 +1,210 @@
+<div class="ui center aligned header">
+  <h2>Students Records Data Entry</h2>
+</div>
+
+<!-- Show the menu bar-->
+<div class="ui fluid eight item inverted menu">
+  <a class="item" {{action 'saveStudent'}}>
+    <i class="save icon"></i>
+    Save
+  </a>
+  <a class="item" {{action 'undoSave'}}>
+    <i class="undo icon"></i>
+    Undo
+  </a>
+  <a class="item" {{action 'firstStudent'}}>
+    <i class="step backward icon"></i>
+    First
+  </a>
+  <a class="item" {{action 'previousStudent'}}>
+    <i class="arrow left icon"></i>
+    Previous
+  </a>
+  <a class="item" {{action 'nextStudent'}}>
+    <i class="arrow right icon"></i>
+    Next
+  </a>
+  <a class="item" {{action 'lastStudent'}}>
+    <i class="step forward icon"></i>
+    Last
+  </a>
+  <a class="item" {{action 'allStudents'}}>
+    <i class="content icon"></i>
+    All Records
+  </a>
+  <a class="item" {{action 'findStudent'}}>
+    <i class="search icon"></i>
+    Find Record
+  </a>
+</div>
+
+{{#if isDeleting}}
+  {{confirm-delete notDONE = isDeleting onConfirm=(action 'confirmedDelete')}}
+{{else}}
+  <!-- Show data entry form -->
+
+  <div class="ui top attached fluid seven item tabular menu">
+    <div class="active item" data-tab="basics">Basic Info</div>
+    <div class="item" data-tab="admission">Admission Record</div>
+    <div class="item" data-tab="programRecord">Program Records</div>
+    <div class="item" data-tab="advancedStanding">Advanced Standing</div>
+   <div class="item" data-tab="scholarshipsAwards">Scholarships / Awards</div> 
+    <div class="item" data-tab="highSchool">High School</div>
+    <div class="item" data-tab="adjudication">Adjudication</div>
+  </div>
+  <div class="ui bottom attached active tab segment"data-tab="basics">
+    <!-- student basic information !-->
+
+    <div class="ui grid">
+      <div class="ui right aligned  seven wide column">
+        <div class="ui form">
+          <div class="inline field">
+            <label>Student Number</label>
+            {{input size="10" type="text" readonly = true value = currentStudent.number}}
+          </div>
+          <div class="inline field">
+            <label>First Name</label>
+            {{input type="text"  value = currentStudent.firstName}}
+          </div>
+          <div class="inline field">
+            <label>Last Name</label>
+            {{input type="text" value = currentStudent.lastName }}
+          </div>
+          <div class="inline field">
+            <label>Gender</label>
+            <select onchange={{action 'selectGender' value="target.value"}}>
+
+              <!-- GENDER HERE -->
+              {{#each genderModel as |genderChoice|}}
+                <option value={{genderChoice.id}} selected={{eq currentStudent.genderInfo.id genderChoice.id}}>
+                  {{genderChoice.name}}
+                </option>
+              {{/each}}
+            </select>
+
+          </div>
+          <div class="inline field">
+            <label>Date of Birth</label>
+            <input value={{selectedDate}} type="date" onchange={{action 'assignDate' value="target.value"}}>
+          </div>
+          <div class="inline field">
+            <label>Residency</label>
+            <select onchange={{action 'selectResidency' value="target.value"}}>
+              {{#each residencyModel as |residencyChoice|}}
+                <option value={{residencyChoice.id}} selected={{eq currentStudent.resInfo.id
+                                                                   residencyChoice.id}}>{{residencyChoice.name}} </option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="inline field">
+            <button class="red ui button" {{action 'deleteStudent'}}>Delete Record</button>
+          </div>
+        </div>
+      </div>
+      <!-- Show student photo -->
+      <div class="ui center aligned  seven wide column segment">
+        <img  src={{studentPhoto}}>
+      </div>
+    </div>
+
+  </div>
+  <div class="ui tab" data-tab="admission">
+    <!-- admission records !-->
+    <br>
+    <h2>{{currentStudent.number}}</h2>
+      <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+    <br>
+        <div class="ui form">
+          <div class="inline field">
+            <label>Admission Average</label>
+            {{input type="input" readonly = true value = currentStudent.admissionAverage}}
+          </div>
+
+          <div class="inline field">
+            <label>Basis Of Admission</label>
+            {{textarea cols="1" rows="6" readonly = true value = currentStudent.basisOfAdmission}}
+          </div>
+
+          <div class="inline field">
+            <label>Admission Comments</label>
+            {{textarea cols="1" rows="6" readonly = true value = currentStudent.admissionComments}}
+          </div>
+
+          <div class="inline field">
+            <label>Registration Comments</label>
+            {{textarea cols="1" rows="6" readonly = true value = currentStudent.registrationComments}}
+          </div>
+
+          <div class="inline field">
+           <div class="ui positive button" {{action "updateAdmission"}}>Update</div>
+          </div>
+          {{#if updateAdmission}}
+    {{update-admission student = currentStudent notDONE = updateAdmission}} <!-- INDEX = currentIndex notDONE = showFindStudent offset = offset studentsModel = studentsRecords -->
+    {{/if}}
+        </div>
+  </div>
+  <div class="ui tab" data-tab="programRecord">
+    <br>
+    <h2>{{currentStudent.number}}</h2>
+    <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+    <!-- Display the program records for this student-->
+    {{program-records terms = termModel student = currentStudent statusModel = statusModel loadModel = loadModel
+                      planModel = planModel termCodes = termCodeModel}}
+
+  </div>
+
+  <div class="ui tab" data-tab="advancedStanding">
+    <!-- Advanced standing !-->
+    <br>
+    <h2>{{currentStudent.number}}</h2>
+    <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+    <h3>Advanced Standing</h3>
+    <div class="ui segment">
+    {{advanced-standing standings = advancedStandingArray}}
+    <br>
+   <div class="ui button" {{action "addCourse"}}>Add Course</div> 
+     </div>
+    {{#if showNewCourse}}
+    {{add-advanced-standing newrecipient = currentStudent notDONE = showNewCourse standings = advancedStandingArray}}
+    {{/if}}
+</div>
+
+
+<div class="ui tab" data-tab="scholarshipsAwards">
+  <br>
+    <h2>{{currentStudent.number}}</h2>
+    <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+<h3>Scholarships and Awards</h3>
+<div class="ui segment">
+    {{scholarships-awards award = award awards = awardNotes}}
+    <br>
+    <div class="ui button" {{action "addAward"}}>Add Scholarship/Award</div>
+</div>
+    {{#if showNewAward}}
+    {{add-award newrecipient = currentStudent studentID = currentStudent.number notDONE = showNewAward awards = awardNotes}}
+    {{/if}}
+  </div>
+ 
+<div class="ui tab" data-tab="highSchool">
+    <!-- High school !-->
+    <br>
+    <h2>{{currentStudent.number}}</h2>
+    <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+    <div class="ui segment">
+    {{#if currentStudent}}
+    {{high-school student = currentStudent}}
+    {{/if}}
+    </div>
+</div>
+
+<div class="ui tab" data-tab="adjudication">
+    <br>
+    <h2>{{currentStudent.number}}</h2>
+    <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+     {{#each termModel as |term|}}
+    {{manual-adjudication student = currentStudent currentTerm = term codesArray = codeModel}}
+    <br>
+    {{/each}}
+</div>
+
+{{/if}}

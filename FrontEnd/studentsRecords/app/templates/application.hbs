@@ -1,0 +1,55 @@
+{{#if oudaAuth.isAuthenticated }}
+<div class="ui segment">
+  <div class="ui secondary center aligned grid padded segment">
+   <!-- <div class="three wide column"> -->
+     <div class="two wide column" >
+      <img class="ui right aligned container image" src="/assets/images/UWO Stacked.png">
+      <h4> Logged in as:  {{oudaAuth.getName}}</h4>
+    </div>
+   <!-- <div class="thirteen wide column"> -->
+     <div class="eight wide column">
+      <br>
+      <h2>Welcome to Western Engineering Adjudication System</h2>
+    </div>
+
+  </div>
+
+  <div class="ui inverted menu">
+    {{#link-to 'home'}}
+      <a class="item">
+        <i class="home icon"></i>
+        Home
+      </a>
+    {{/link-to}}
+    <div class="right menu">
+      {{#link-to 'user'}}<a class="item">User Profile</a>{{/link-to}}
+      {{#link-to 'admin-portal'}}<a class="item">Admin Portal</a>{{/link-to}}
+      {{#link-to 'home.about'}}<a class="item">About</a>{{/link-to}}
+      <a>{{help-clicked}} </a>
+      <a class="item">{{log-out name=oudaAuth.getName}} </a>
+    </div>
+  </div>
+
+  <br> <br>
+  {{outlet}}
+  <br> <br>
+  <footer>
+    <div class="ui violet inverted grid segment">
+      <div class="fourteen wide column">
+        © Copyright - Digital Panda, Dr. Abdelkader Ouda
+      </div>
+      <div class="two wide column">
+        <img class="ui right aligned container image" src="/assets/images/DigitalPanda.png">
+      </div>
+    </div>
+  </footer>
+</div>
+{{else}}
+
+  <div>
+    {{#unless oudaAuth.getName}}
+      {{outlet "login"}}
+    {{/unless}}
+  </div>
+
+{{/if}}

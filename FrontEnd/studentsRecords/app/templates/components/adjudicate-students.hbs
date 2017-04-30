@@ -1,0 +1,45 @@
+<div class="ui modal">
+  <div class="content">
+    <div class ="ui center aligned basic segment">
+      <h3>Adjudicate</h3>
+      {{#if isWorking}}
+        <br><br><br><br><br>
+        <div class="ui active inverted dimmer">
+          <br><br>
+          <div class="ui centered inline text loader">Adjudication In Progress</div>
+          <p>{{message}}</p>
+           <div class="basic red ui button" {{action "cancel"}}>Cancel</div>
+        </div>
+      {{else if isFinished}}
+        <br>
+        <div class="ui inline field">
+          <i class="huge green checkmark icon"></i>
+          <h3>All Done!</h3>
+          {{#if hasError}}
+            <p>One or more students will require manual adjudication</p>
+          {{/if}}
+          <div class="basic green ui button" {{action "cancel"}}>OK</div>
+        </div>
+        <br>
+
+        {{else if parsingError}}
+        <br>
+        <div class="ui inline field">
+          <i class="huge orange warning icon"></i>
+          <h3>Adjudication Did Not Work</h3>
+          <p>There was an error with parsing the rules of the codes.</p>
+          <p>Please ensure all rules follow expected formatting</p>
+          <div class="basic green ui button" {{action "cancel"}}>OK</div>
+        </div>
+        <br>
+      {{else}}
+
+    <div class="actions">
+         <div class="basic green ui button" {{action "loop"}}>Are you sure you want to adjudicate</div>
+      <div class="basic red ui button" {{action "cancel"}}>Cancel</div>
+      <br><br>
+    </div>
+    {{/if}}
+    </div>
+  </div>
+</div>

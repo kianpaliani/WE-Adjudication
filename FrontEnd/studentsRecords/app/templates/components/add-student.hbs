@@ -1,0 +1,69 @@
+<div class="ui center aligned header">
+  <h2>Add Student</h2>
+</div>
+
+
+<div class="ui fluid three item inverted menu">
+  <a class="item" {{action 'saveStudent'}}>
+    <i class="save icon"></i>
+    Save
+  </a>
+  <a class="item" {{action 'addMalePhoto'}}>
+    <i class="image icon"></i>
+    Add Male Photo
+  </a>
+  <a class="item" {{action 'addFemPhoto'}}>
+    <i class="image icon"></i>
+    Add Female Photo
+  </a>
+</div>
+
+
+<div class="ui grid">
+  <div class="ui right aligned  seven wide column">
+    <div class="ui form">
+      <div class="inline field">
+        <label>Student Number</label>
+        {{input size="10" type="text" value = numBox}}
+      </div>
+      <div class="inline field">
+        <label>First Name</label>
+        {{input type="text"  value = fNameBox}}
+      </div>
+      <div class="inline field">
+        <label>Last Name</label>
+        {{input type="text" value = lNameBox}}
+      </div>
+      <div class="inline field">
+        <label>Gender</label>
+     <select class="dropDown" onchange={{action 'selectGender' value="target.value"}}>
+          {{#each genderModel as |genderChoice|}}
+            <option value={{genderChoice.id}}>{{genderChoice.name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="inline field">
+        <label>Date of Birth</label>
+        <input value={{selectedDate}} type="date" onchange={{action 'assignDate' value="target.value"}}>
+      </div>
+      <div class="inline field">
+        <label>Residency</label>
+       <select class="dropDown" onchange={{action 'selectResidency' value="target.value"}}> 
+          {{#each residencyModel as |residencyChoice|}}
+            <option value={{residencyChoice.id}}>{{residencyChoice.name}} </option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="ui center aligned  seven wide column segment">
+    <img  src={{studentPhoto}}>
+  </div>
+    {{#if studentAdded}}
+        {{confirm-studentadd notDONE = studentAdded}}
+
+         {{else if studentFailAdded}}
+         {{confirmfail-studentadd notDONE = studentFailAdded}}
+  {{/if}}
+</div>
+

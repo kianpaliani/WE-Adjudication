@@ -1,0 +1,36 @@
+{{#each codes as |codeObj|}}
+<div class="ui segment">
+  <h2 class="ui header">{{codeObj.name}}</h2>
+  <div class="ui action input">
+      <!-- Loop through input properties that need to be filled out -->
+      {{#each codeObj.inputModelProp as |inputProp index|}}
+
+        <!-- If matching property model is a string or number, display an input box -->
+        {{#if (or (eq inputProp.type "string") (eq inputProp.type "number"))}}
+          {{input type=inputProp.type placeholder=(lookup codeObj.placeholder index) id=(append-number codeObj.emberName index)}}
+
+        <!-- If matching property model is an ember model, display a dropdown -->
+        {{else if (eq inputProp.type "model")}}
+          <select class="ui search dropdown" id={{append-number codeObj.emberName index}}>
+            <option disabled selected>{{lookup codeObj.placeholder index}}</option>
+
+            {{#each (get lists inputProp.modelName) as |element|}}
+              <option value={{element.id}}>{{get element inputProp.modelLabel}}</option>
+            {{else}}
+              <option>No options found</option>
+            {{/each}}
+
+          </select>
+        {{/if}}
+
+      {{/each}}
+      <!-- Add new content button -->
+      <button class="positive ui button" {{action 'addCode' codeObj}}>Add</button>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <!-- Loop through the list of objects and display them -->
+  {{existing-codes-pagination lists=lists codeObj=codeObj}}
+</div>
+{{/each}}
